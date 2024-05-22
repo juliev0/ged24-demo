@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/afugazzotto/ged24-demo.git
     targetRevision: HEAD
-    path: demo-app-resources
+    path: ../resources/demo-app
   destination:
     server: https://kubernetes.default.svc
     namespace: demo-app
