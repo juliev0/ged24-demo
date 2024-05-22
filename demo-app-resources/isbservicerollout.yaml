@@ -1,0 +1,10 @@
+apiVersion: numaplane.numaproj.io/v1alpha1
+kind: ISBServiceRollout
+metadata:
+  name: my-isbsvc
+  namespace: demo-app
+spec:
+  interStepBufferService:
+    redis:
+      native:
+        version: 7.0.11
