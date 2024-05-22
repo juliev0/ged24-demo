@@ -19,7 +19,7 @@ kubectl apply -n numaflow-system -f https://raw.githubusercontent.com/numaproj/n
 ```
 kubectl create ns numaplane-system
 
-kubectl apply -n numaplane-system -f https://github.com/numaproj-labs/numaplane/blob/rolloutControllers/config/install.yaml
+kubectl apply -n numaplane-system -f https://raw.githubusercontent.com/numaproj-labs/numaplane/rolloutControllers/config/install.yaml
 ```
 
 ## Install ArgoCD
@@ -35,12 +35,13 @@ helm upgrade --install argocd argocd/ -n argocd --create-namespace --values argo
 kubectl config set-context --current=true --namespace=default
 ```
 
-### ArgoCD UI Access
-Username: `admin`
-Password: `echo $(kubectl -n argocd get secret argocd-initial-admin-secret -o json | jq -r '.data.password') | base64 -d`
-
-#### Port Forward
-`kubectl -n argocd port-forward service/argocd-server 8081:80`
-
 ## Install Root App
 `kubectl apply -f root-app.yaml`
+
+## ArgoCD UI Access
+Username: `admin`
+
+Password: `echo $(kubectl -n argocd get secret argocd-initial-admin-secret -o json | jq -r '.data.password') | base64 -d`
+
+### Port Forward
+`kubectl -n argocd port-forward service/argocd-server 8081:80`
