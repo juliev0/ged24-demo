@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.intuit.com/afugazzotto/ged24-demo.git
+    repoURL: https://github.com/afugazzotto/ged24-demo.git
     targetRevision: HEAD
     path: demo-app-resources
   destination:
