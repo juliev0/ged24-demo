@@ -5,7 +5,9 @@
 - `helm`
 - `kubectl`
 - `jq`
-- k8s cluster and kubeconfig setup
+- K8s cluster and kubeconfig setup
+- Numaproj CRDs installed on K8s cluster
+- Numaplane installed on K8s cluster
 
 ## Install ArgoCD
 ```
