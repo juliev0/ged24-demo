@@ -6,6 +6,6 @@ metadata:
 spec:
   interStepBufferService:
     jetstream:
-      version: 2.9.1
+      version: latest
       persistence:
-        volumeSize: 1Gi
+        volumeSize: 3Gi
