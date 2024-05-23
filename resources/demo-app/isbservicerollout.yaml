@@ -8,4 +8,4 @@ spec:
     jetstream:
       version: latest
       persistence:
-        volumeSize: 3Gi
+        volumeSize: 1Gi

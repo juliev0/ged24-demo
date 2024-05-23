@@ -6,13 +6,6 @@
 - `jq`
 - K8s cluster and kubeconfig setup
 
-## Install Numaflow
-```
-kubectl create ns numaflow-system
-
-kubectl apply -n numaflow-system -f https://raw.githubusercontent.com/numaproj/numaflow/stable/config/install.yaml
-```
-
 ## Install Numaplane
 ```
 kubectl create ns numaplane-system

@@ -11,42 +11,50 @@ data:
     numaplane.numaproj.io/PipelineRollout:
       health.lua: |
         hs = {}
-        hs.status = "Progressing"
-        hs.message = ""
         if obj.status ~= nil then
-          if obj.status.phase ~= nil then
-            if obj.status.phase == "Running" then
-              hs.status = "Healthy"
-              hs.message = "All good!"
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "ChildResourcesHealthy" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+              if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = condition.message
+                return hs
+              end
             end
           end
         end
+        hs.status = "Progressing"
+        hs.message = "Waiting for certificate"
         return hs
     numaplane.numaproj.io/ISBServiceRollout:
       health.lua: |
         hs = {}
-        hs.status = "Progressing"
-        hs.message = ""
         if obj.status ~= nil then
-          if obj.status.phase ~= nil then
-            if obj.status.phase == "Running" then
-              hs.status = "Healthy"
-              hs.message = "All good!"
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "ChildResourcesHealthy" and condition.status == "False" then
+                hs.status = "Degraded"
+                hs.message = condition.message
+                return hs
+              end
+              if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
+                hs.status = "Healthy"
+                hs.message = condition.message
+                return hs
+              end
             end
           end
         end
+        hs.status = "Progressing"
+        hs.message = "Waiting for certificate"
         return hs
     numaplane.numaproj.io/NumaflowControllerRollout:
       health.lua: |
         hs = {}
-        hs.status = "Progressing"
-        hs.message = ""
-        if obj.status ~= nil then
-          if obj.status.phase ~= nil then
-            if obj.status.phase == "Running" then
-              hs.status = "Healthy"
-              hs.message = "All good!"
-            end
-          end
-        end
+        hs.status = "Healthy"
+        hs.message = "All good!"
         return hs
