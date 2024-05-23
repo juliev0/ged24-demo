@@ -14,13 +14,13 @@ kubectl apply -n numaflow-system -f https://raw.githubusercontent.com/numaproj/n
 ```
 
 ## Install Numaplane
-**NOTE:** this installation uses the latest Numaplane of the GED-24 special branch `rolloutControllers`.
-
 ```
 kubectl create ns numaplane-system
 
 kubectl apply -n numaplane-system -f https://raw.githubusercontent.com/numaproj-labs/numaplane/rolloutControllers/config/install.yaml
 ```
+
+**NOTE:** this installation uses the latest Numaplane of the GED-May-24 special branch `rolloutControllers`. Therefore, run `make start` from that branch to install the branch changes to the cluster.
 
 ## Install ArgoCD
 ```
