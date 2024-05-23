@@ -11,7 +11,7 @@ spec:
         source:
           generator:
             rpu: 5
-            duration: 5s
+            duration: 15s
       - name: cat
         udf:
           builtin:
