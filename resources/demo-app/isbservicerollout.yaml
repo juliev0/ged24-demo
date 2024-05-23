@@ -5,6 +5,7 @@ metadata:
   namespace: demo-app
 spec:
   interStepBufferService:
-    redis:
-      native:
-        version: 7.0.11
+    jetstream:
+      version: 2.9.1
+      persistence:
+        volumeSize: 1Gi
