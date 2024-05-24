@@ -45,3 +45,6 @@ Password: `echo $(kubectl -n argocd get secret argocd-initial-admin-secret -o js
 
 ### Port Forward
 `kubectl -n argocd port-forward service/argocd-server 8081:80`
+
+## Numaflow Server Port Forward
+`kubectl -n numaflow-system port-forward service/numaflow-server 8082:8443`
