@@ -12,10 +12,10 @@ spec:
           generator:
             rpu: 5
             duration: 15s
-      - name: cat
-        udf:
-          builtin:
-            name: cat
+      # - name: cat
+      #   udf:
+      #     builtin:
+      #       name: cat
       - name: out
         sink:
           log: {}
