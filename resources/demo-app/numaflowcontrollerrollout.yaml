@@ -1,7 +1,7 @@
 apiVersion: numaplane.numaproj.io/v1alpha1
 kind: NumaflowControllerRollout
 metadata:
-  name: my-numaflow-controller
+  name: numaflow-controller
   namespace: demo-app
 spec:
   controller:
