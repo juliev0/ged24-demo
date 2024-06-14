@@ -1,64 +1,64 @@
-apiVersion: numaplane.numaproj.io/v1alpha1
-kind: PipelineRollout
-metadata:
-  name: my-pipeline-pause
-  namespace: demo-app
-spec:
-  pipeline:
-    interStepBufferServiceName: my-isbsvc
-    vertices:
-      - name: in
-        source:
-          generator:
-            rpu: 5
-            duration: 1s
-      - name: even-or-odd
-        partitions: 2
-        udf:
-          container:
-            image: quay.io/numaio/numaflow-go/map-even-odd:numaplane-demo-v1.0.0
-            imagePullPolicy: Always
-      - name: even-sink
-        partitions: 2
-        sink:
-          udsink:
-            container:
-              image: quay.io/numaio/numaflow-go/redis-sink:stable
-              imagePullPolicy: Always
-      - name: odd-sink
-        sink:
-          udsink:
-            container:
-              image: quay.io/numaio/numaflow-go/redis-sink:stable
-              imagePullPolicy: Always
-      - name: number-sink
-        sink:
-          udsink:
-            container:
-              image: quay.io/numaio/numaflow-go/redis-sink:stable
-              imagePullPolicy: Always
-    edges:
-      - from: in
-        to: even-or-odd
-      - from: even-or-odd
-        to: even-sink
-        conditions:
-          tags:
-            operator: or
-            values:
-              - even-tag
-      - from: even-or-odd
-        to: odd-sink
-        conditions:
-          tags:
-            operator: or
-            values:
-              - odd-tag
-      - from: even-or-odd
-        to: number-sink
-        conditions:
-          tags:
-            operator: or
-            values:
-              - odd-tag
-              - even-tag
+# apiVersion: numaplane.numaproj.io/v1alpha1
+# kind: PipelineRollout
+# metadata:
+#   name: my-pipeline-pause
+#   namespace: demo-app
+# spec:
+#   pipeline:
+#     interStepBufferServiceName: my-isbsvc
+#     vertices:
+#       - name: in
+#         source:
+#           generator:
+#             rpu: 5
+#             duration: 1s
+#       - name: even-or-odd
+#         partitions: 2
+#         udf:
+#           container:
+#             image: quay.io/numaio/numaflow-go/map-even-odd:numaplane-demo-v1.0.0
+#             imagePullPolicy: Always
+#       - name: even-sink
+#         partitions: 2
+#         sink:
+#           udsink:
+#             container:
+#               image: quay.io/numaio/numaflow-go/redis-sink:stable
+#               imagePullPolicy: Always
+#       - name: odd-sink
+#         sink:
+#           udsink:
+#             container:
+#               image: quay.io/numaio/numaflow-go/redis-sink:stable
+#               imagePullPolicy: Always
+#       - name: number-sink
+#         sink:
+#           udsink:
+#             container:
+#               image: quay.io/numaio/numaflow-go/redis-sink:stable
+#               imagePullPolicy: Always
+#     edges:
+#       - from: in
+#         to: even-or-odd
+#       - from: even-or-odd
+#         to: even-sink
+#         conditions:
+#           tags:
+#             operator: or
+#             values:
+#               - even-tag
+#       - from: even-or-odd
+#         to: odd-sink
+#         conditions:
+#           tags:
+#             operator: or
+#             values:
+#               - odd-tag
+#       - from: even-or-odd
+#         to: number-sink
+#         conditions:
+#           tags:
+#             operator: or
+#             values:
+#               - odd-tag
+#               - even-tag

@@ -1,0 +1,31 @@
+apiVersion: numaplane.numaproj.io/v1alpha1
+kind: PipelineRollout
+metadata:
+  name: my-other-pipeline
+  namespace: demo-app
+spec:
+  pipeline:
+    interStepBufferServiceName: my-isbsvc
+    vertices:
+      - name: in
+        source:
+          generator:
+            rpu: 5
+            duration: 15s
+      - name: cat
+        udf:
+          builtin:
+            name: cat
+      - name: out
+        sink:
+          log: {}
+      - name: out2
+        sink:
+          log: {}
+    edges:
+      - from: in
+        to: cat
+      - from: cat
+        to: out
+      - from: cat
+        to: out2
