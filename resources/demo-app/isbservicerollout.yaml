@@ -3,6 +3,8 @@ kind: ISBServiceRollout
 metadata:
   name: my-isbsvc
   namespace: demo-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   interStepBufferService:
     jetstream:

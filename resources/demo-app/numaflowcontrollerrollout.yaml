@@ -3,6 +3,8 @@ kind: NumaflowControllerRollout
 metadata:
   name: numaflow-controller
   namespace: demo-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   controller:
     version: 1.2.1
