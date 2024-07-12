@@ -11,60 +11,88 @@ data:
     numaplane.numaproj.io/PipelineRollout:
       health.lua: |
         hs = {}
+        healthyCondition = {}
+        pipelinePaused = {}
         if obj.status ~= nil then
           if obj.status.conditions ~= nil then
             for i, condition in ipairs(obj.status.conditions) do
-              if condition.type == "ChildResourcesHealthy" and condition.status == "False" then
-                hs.status = "Degraded"
-                hs.message = condition.message
-                return hs
+              if condition.type == "ChildResourcesHealthy" then
+                healthyCondition = condition
               end
-              if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
-                hs.status = "Healthy"
-                hs.message = condition.message
-                return hs
-              end
-              if condition.type == "ChildResourcesHealthy" and condition.status == "Unknown" then
-                hs.status = "Degrade"
-                hs.message = condition.message
-                return hs
+              if condition.type == "PipelinePausingOrPaused" then
+                pipelinePaused = condition
               end
             end
           end
         end
-        hs.status = "Progressing"
-        hs.message = "Waiting for Pipeline status"
-        return hs
+        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
+          hs.status = "Progressing"
+          hs.message = "Waiting for Pipeline status"
+          return hs
+        elseif pipelinePaused.status == "True" then
+          hs.status = "Suspended"
+          hs.message = pipelinePaused.message
+          return hs
+        elseif healthyCondition.status == "True" then
+          hs.status = "Healthy"
+          hs.message = healthyCondition.message
+          return hs
+        else
+          hs.status = "Degraded"
+          hs.message = healthyCondition.message
+          return hs
+        end
+
     numaplane.numaproj.io/ISBServiceRollout:
       health.lua: |
         hs = {}
+        healthyCondition = {}
         if obj.status ~= nil then
           if obj.status.conditions ~= nil then
             for i, condition in ipairs(obj.status.conditions) do
-              if condition.type == "ChildResourcesHealthy" and condition.status == "False" then
-                hs.status = "Degraded"
-                hs.message = condition.message
-                return hs
-              end
-              if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
-                hs.status = "Healthy"
-                hs.message = condition.message
-                return hs
-              end
-              if condition.type == "ChildResourcesHealthy" and condition.status == "Unknown" then
-                hs.status = "Degrade"
-                hs.message = condition.message
-                return hs
+              if condition.type == "ChildResourcesHealthy" then
+                healthyCondition = condition
               end
             end
           end
         end
-        hs.status = "Progressing"
-        hs.message = "Waiting for ISBService status"
-        return hs
+        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
+          hs.status = "Progressing"
+          hs.message = "Waiting for ISBService status"
+          return hs
+        elseif healthyCondition.status == "True" then
+          hs.status = "Healthy"
+          hs.message = healthyCondition.message
+          return hs
+        else
+          hs.status = "Degraded"
+          hs.message = healthyCondition.message
+          return hs
+        end
+
     numaplane.numaproj.io/NumaflowControllerRollout:
       health.lua: |
         hs = {}
-        hs.status = "Healthy"
-        hs.message = "All good!"
-        return hs
+        healthyCondition = {}
+        if obj.status ~= nil then
+          if obj.status.conditions ~= nil then
+            for i, condition in ipairs(obj.status.conditions) do
+              if condition.type == "ChildResourcesHealthy" then
+                healthyCondition = condition
+              end
+            end
+          end
+        end
+        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
+          hs.status = "Progressing"
+          hs.message = "Waiting for NumaflowController status"
+          return hs
+        elseif healthyCondition.status == "True" then
+          hs.status = "Healthy"
+          hs.message = healthyCondition.message
+          return hs
+        else
+          hs.status = "Degraded"
+          hs.message = healthyCondition.message
+          return hs
+        end
