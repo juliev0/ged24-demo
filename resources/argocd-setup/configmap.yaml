@@ -25,6 +25,7 @@ data:
             end
           end
         end
+        
         if obj.metadata.generation == obj.status.observedGeneration then
           if (healthyCondition ~= {} and healthyCondition.status == "False" and (obj.metadata.generation == healthyCondition.observedGeneration)) or obj.status.phase == "Failed" then
             hs.status = "Degraded"
