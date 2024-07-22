@@ -25,23 +25,25 @@ data:
             end
           end
         end
-        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
-          hs.status = "Progressing"
-          hs.message = "Waiting for Pipeline status"
-          return hs
-        elseif pipelinePaused.status == "True" then
-          hs.status = "Suspended"
-          hs.message = pipelinePaused.message
-          return hs
-        elseif healthyCondition.status == "True" then
-          hs.status = "Healthy"
-          hs.message = healthyCondition.message
-          return hs
-        else
-          hs.status = "Degraded"
-          hs.message = healthyCondition.message
-          return hs
+        if obj.metadata.generation == obj.status.observedGeneration then
+          if pipelinePaused.status == "True" and (obj.metadata.generation == pipelinePaused.observedGeneration) then
+            hs.status = "Suspended"
+            hs.message = "Pipeline is paused"
+            return hs
+          elseif healthyCondition.status == "True" and (obj.metadata.generation == healthyCondition.observedGeneration) then
+            hs.status = "Healthy"
+            hs.message = healthyCondition.message
+            return hs
+          elseif (healthyCondition.status == "False" and (obj.metadata.generation == healthyCondition.observedGeneration)) or obj.status.phase == "Failed" then
+            hs.status = "Degraded"
+            hs.message = healthyCondition.message
+            return hs
+          end
         end
+
+        hs.status = "Progressing"
+        hs.message = "Waiting for Pipeline status"
+        return hs
 
     numaplane.numaproj.io/ISBServiceRollout:
       health.lua: |
@@ -56,19 +58,21 @@ data:
             end
           end
         end
-        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
-          hs.status = "Progressing"
-          hs.message = "Waiting for ISBService status"
-          return hs
-        elseif healthyCondition.status == "True" then
-          hs.status = "Healthy"
-          hs.message = healthyCondition.message
-          return hs
-        else
-          hs.status = "Degraded"
-          hs.message = healthyCondition.message
-          return hs
+        if obj.metadata.generation == obj.status.observedGeneration then
+          if healthyCondition.status == "True" and (obj.metadata.generation == healthyCondition.observedGeneration) then
+            hs.status = "Healthy"
+            hs.message = healthyCondition.message
+            return hs
+          elseif (healthyCondition.status == "False" and (obj.metadata.generation == healthyCondition.observedGeneration)) or obj.status.phase == "Failed" then
+            hs.status = "Degraded"
+            hs.message = healthyCondition.message
+            return hs
+          end
         end
+
+        hs.status = "Progressing"
+        hs.message = "Waiting for ISBService status"
+        return hs
 
     numaplane.numaproj.io/NumaflowControllerRollout:
       health.lua: |
@@ -83,16 +87,18 @@ data:
             end
           end
         end
-        if (healthyCondition.status == "False" and healthyCondition.reason == "Progressing") or obj.metadata.generation ~= obj.status.observedGeneration then
-          hs.status = "Progressing"
-          hs.message = "Waiting for NumaflowController status"
-          return hs
-        elseif healthyCondition.status == "True" then
-          hs.status = "Healthy"
-          hs.message = healthyCondition.message
-          return hs
-        else
-          hs.status = "Degraded"
-          hs.message = healthyCondition.message
-          return hs
+        if obj.metadata.generation == obj.status.observedGeneration then
+          if healthyCondition.status == "True" and (obj.metadata.generation == healthyCondition.observedGeneration) then
+            hs.status = "Healthy"
+            hs.message = healthyCondition.message
+            return hs
+          elseif (healthyCondition.status == "False" and (obj.metadata.generation == healthyCondition.observedGeneration)) or obj.status.phase == "Failed" then
+            hs.status = "Degraded"
+            hs.message = healthyCondition.message
+            return hs
+          end
         end
+
+        hs.status = "Progressing"
+        hs.message = "Waiting for NumaflowController status"
+        return hs
