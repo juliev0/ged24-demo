@@ -7,22 +7,23 @@ metadata:
     argocd.argoproj.io/sync-wave: "3"
 spec:
   pipeline:
-    interStepBufferServiceName: my-isbsvc
-    vertices:
-      - name: in
-        source:
-          generator:
-            rpu: 5
-            duration: 15s
-      - name: cat
-        udf:
-          builtin:
-            name: cat
-      - name: out
-        sink:
-          log: {}
-    edges:
-      - from: in
-        to: cat
-      - from: cat
-        to: out
+    spec:
+      interStepBufferServiceName: my-isbsvc
+      vertices:
+        - name: in
+          source:
+            generator:
+              rpu: 5
+              duration: 15s
+        - name: cat
+          udf:
+            builtin:
+              name: cat
+        - name: out
+          sink:
+            log: {}
+      edges:
+        - from: in
+          to: cat
+        - from: cat
+          to: out

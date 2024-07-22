@@ -7,7 +7,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   interStepBufferService:
-    jetstream:
-      version: latest
-      persistence:
-        volumeSize: 1Gi
+    spec:
+      jetstream:
+        version: latest
+        persistence:
+          volumeSize: 1Gi
