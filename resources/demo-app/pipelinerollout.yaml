@@ -8,6 +8,8 @@ metadata:
 spec:
   pipeline:
     spec:
+      lifecycle:
+        desiredPhase: "Paused"
       interStepBufferServiceName: my-isbsvc
       vertices:
         - name: in
