@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/afugazzotto/ged24-demo.git
+    repoURL: https://github.com/dpadhiar/ged24-demo.git
     targetRevision: HEAD
     path: resources/argocd-setup
   destination:
