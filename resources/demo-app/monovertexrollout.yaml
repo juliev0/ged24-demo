@@ -2,7 +2,7 @@ apiVersion: numaplane.numaproj.io/v1alpha1
 kind: MonoVertexRollout
 metadata:
   name: my-monovertex
-  namespace: example-namespace
+  namespace: default
 spec:
   monoVertex:
     spec:
