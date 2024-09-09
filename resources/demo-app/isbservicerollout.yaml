@@ -1,0 +1,13 @@
+apiVersion: numaplane.numaproj.io/v1alpha1
+kind: ISBServiceRollout
+metadata:
+  name: my-isbsvc
+  namespace: example-namespace
+spec:
+  interStepBufferService:
+    spec:
+      # Example from https://github.com/numaproj/numaflow/blob/main/examples/0-isbsvc-jetstream.yaml
+      jetstream:
+        version: 2.10.3
+        persistence:
+          volumeSize: 1Gi
