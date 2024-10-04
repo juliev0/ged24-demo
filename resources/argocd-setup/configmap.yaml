@@ -178,6 +178,7 @@ data:
       
       if obj.status ~= nil and obj.status.upgradeInProgress ~= nil then
         actions["allow-data-loss"]["disabled"] = false
+      end
       if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true" then
         actions["disallow-data-loss"]["disabled"] = false
       end
