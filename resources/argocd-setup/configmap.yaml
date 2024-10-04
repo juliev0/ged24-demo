@@ -176,7 +176,7 @@ data:
       end
       --]]
       
-      if obj.status ~= nil and obj.status.upgradeInProgress ~= nil then
+      if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
         actions["allow-data-loss"]["disabled"] = false
       end
       --[[
