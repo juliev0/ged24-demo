@@ -158,6 +158,8 @@ data:
       local actions = {}
       actions["pause"] = {["disabled"] = true}
       actions["unpause"] = {["disabled"] = true}
+      actions["allow-data-loss"] = {["disabled"] = true}
+      actions["disallow-data-loss"] = {["disabled"] = true}
 
       local paused = false
       if obj.spec.pipeline.spec.lifecycle ~= nil and obj.spec.pipeline.spec.lifecycle.desiredPhase ~= nil and obj.spec.pipeline.spec.lifecycle.desiredPhase == "Paused" then
@@ -167,6 +169,12 @@ data:
         actions["unpause"]["disabled"] = false
       else
         actions["pause"]["disabled"] = false
+      end
+
+      if obj.status.upgradeInProgress == "PipelinePauseAndDrain"
+        actions["allow-data-loss"]["disabled"] = false
+      if obj.annotations[] ~= nil and obj.annotations["numaplane.numaproj.io/allow-data-loss"] == "true"
+        actions["disallow-data-loss"]["disabled"] = false
       end
       return actions
     definitions:
@@ -180,6 +188,14 @@ data:
     - name: unpause
       action.lua: |
         obj.spec.pipeline.spec.lifecycle.desiredPhase = "Running"
+        return obj
+    - name: allow-data-loss
+      action.lua: |
+        obj.annotations["numaplane.numaproj.io/allow-data-loss"] = "true"
+        return obj
+    - name: disallow-data-loss
+      action.lua: |
+        obj.annotations["numaplane.numaproj.io/allow-data-loss"] = "false"
         return obj
   resource.customizations.actions.numaplane.numaproj.io_MonoVertexRollout: |
     discovery.lua: |
