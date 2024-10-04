@@ -170,12 +170,13 @@ data:
       else
         actions["pause"]["disabled"] = false
       end
-      if obj.status ~= nil
+      if obj.status ~= nil then
         actions["allow-data-loss"]["disabled"] = false
+      end
       --[[
-      if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain"
+      if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
         actions["allow-data-loss"]["disabled"] = false
-      if obj.annotations[] ~= nil and obj.annotations["numaplane.numaproj.io/allow-data-loss"] == "true"
+      if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true"
         actions["disallow-data-loss"]["disabled"] = false
       --]]
       end
@@ -194,11 +195,11 @@ data:
         return obj
     - name: allow-data-loss
       action.lua: |
-        obj.annotations["numaplane.numaproj.io/allow-data-loss"] = "true"
+        obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] = "true"
         return obj
     - name: disallow-data-loss
       action.lua: |
-        obj.annotations["numaplane.numaproj.io/allow-data-loss"] = "false"
+        obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] = "false"
         return obj
   resource.customizations.actions.numaplane.numaproj.io_MonoVertexRollout: |
     discovery.lua: |
