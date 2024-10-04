@@ -2,10 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-cm
+  namespace: argocd
 data:
-  envName: msaas
-  url: https://msaas.argocd.tools-k8s-prd.a.intuit.com
-  application.instanceLabelKey: applications.argoproj.io/app-name
+  #application.instanceLabelKey: applications.argoproj.io/app-name
   resource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
     -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19077
     local hs = {}
