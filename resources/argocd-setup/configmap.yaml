@@ -178,8 +178,8 @@ data:
         actions["allow-data-loss"]["disabled"] = false
       if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true"
         actions["disallow-data-loss"]["disabled"] = false
-      --]]
       end
+      --]]
       return actions
     definitions:
     - name: pause
