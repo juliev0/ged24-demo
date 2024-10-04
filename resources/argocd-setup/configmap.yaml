@@ -170,16 +170,18 @@ data:
       else
         actions["pause"]["disabled"] = false
       end
+      --[[
       if obj.status ~= nil then
         actions["allow-data-loss"]["disabled"] = false
       end
-      --[[
+      --]]
+      
       if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
         actions["allow-data-loss"]["disabled"] = false
-      if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true"
+      if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true" then
         actions["disallow-data-loss"]["disabled"] = false
       end
-      --]]
+    
       return actions
     definitions:
     - name: pause
