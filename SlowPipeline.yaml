@@ -1,0 +1,62 @@
+apiVersion: numaplane.numaproj.io/v1alpha1
+kind: PipelineRollout
+metadata:
+  name: my-pipeline-slow
+  namespace: example-namespace
+spec:
+  pipeline:
+    spec:
+      interStepBufferServiceName: my-isbsvc
+      limits:
+        readBatchSize: 1
+      lifecycle:
+        pauseGracePeriodSeconds: 200
+      vertices:
+        - name: in
+          scale:
+            min: 1
+            max: 1
+          source:
+            http:
+              service: true
+          containerTemplate:
+            env:
+              - name: NUMAFLOW_DEBUG
+                value: "true"
+        - name: cat
+          limits:
+            readBatchSize: 1
+          scale:
+            min: 1
+            max: 1
+          udf:
+            container: 
+              image: quay.io/numaio/numaflow-go/map-cat-sleep:v1
+          containerTemplate:
+            env:
+              - name: NUMAFLOW_DEBUG
+                value: "true"
+        - name: cat-2
+          udf:
+            builtin:
+              name: cat
+          scale:
+            min: 1
+          containerTemplate:
+            env:
+              - name: NUMAFLOW_DEBUG
+                value: "true"
+            max: 1
+        - name: out
+          sink:
+            log: {}
+          scale:
+            min: 1
+            max: 1
+      edges:
+        - from: in
+          to: cat
+        - from: cat
+          to: cat-2
+        - from: cat-2
+          to: out
