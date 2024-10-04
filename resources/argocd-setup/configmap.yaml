@@ -176,7 +176,7 @@ data:
       end
       --]]
       
-      if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
+      if obj.status ~= nil and obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
         actions["allow-data-loss"]["disabled"] = false
       if obj.metadata.annotations[] ~= nil and obj.metadata.annotations["numaplane.numaproj.io/allow-data-loss"] == "true" then
         actions["disallow-data-loss"]["disabled"] = false
