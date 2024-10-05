@@ -2,7 +2,7 @@ apiVersion: numaplane.numaproj.io/v1alpha1
 kind: NumaflowControllerRollout
 metadata:
   name: numaflow-controller
-  namespace: demo-app
+  namespace: example-namespace
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
