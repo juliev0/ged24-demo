@@ -170,11 +170,6 @@ data:
       else
         actions["pause"]["disabled"] = false
       end
-      --[[
-      if obj.status ~= nil then
-        actions["allow-data-loss"]["disabled"] = false
-      end
-      --]]
       
       if obj.status ~= nil and obj.status.upgradeInProgress == "PipelinePauseAndDrain" then
         actions["allow-data-loss"]["disabled"] = false
