@@ -20,19 +20,20 @@ data:
       return hs
     end
 
-    if obj.status ~= nil and obj.status.phase == "Pending" then
-      hs.status = "Progressing"
-      hs.message = "phase=Pending"
-      return hs
-    end
-
-    if obj.status ~= nil and obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
-      hs.status = "Progressing"
-      hs.message = "update in progress"
-      return hs
-    end
-
     if obj.status ~= nil then
+
+      if obj.status.phase == "Pending" then
+        hs.status = "Progressing"
+        hs.message = "phase=Pending"
+        return hs
+      end
+
+      if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
+        hs.status = "Progressing"
+        hs.message = "update in progress"
+        return hs
+      end
+
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" then
@@ -66,14 +67,33 @@ data:
     
 
     hs.status = "Unknown"
-    hs.message = "Waiting for Pipeline status"
+    hs.message = "Unknown Pipeline status"
     return hs
   resource.customizations.health.numaplane.numaproj.io_ISBServiceRollout: |
     -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19077
     local hs = {}
     local healthyCondition = {}
 
+    if obj.metadata.generation ~= obj.status.observedGeneration then
+      hs.status = "Progressing"
+      hs.message = "not yet reconciled"
+      return hs
+    end
+
     if obj.status ~= nil then
+
+      if obj.status.phase == "Pending" then
+        hs.status = "Progressing"
+        hs.message = "phase=Pending"
+        return hs
+      end
+
+      if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
+        hs.status = "Progressing"
+        hs.message = "update in progress"
+        return hs
+      end
+
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" then
@@ -81,26 +101,25 @@ data:
           end
         end
       end
-
-      if obj.metadata.generation == obj.status.observedGeneration then
-        if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "ISBSvcFailed") or obj.status.phase == "Failed" then
-          hs.status = "Degraded"
-          if obj.status.phase == "Failed" then
-            hs.message = obj.status.message
-          else
-            hs.message = healthyCondition.message
-          end
-          return hs
-        elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
-          hs.status = "Healthy"
+      
+      if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "ISBSvcFailed") or obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        if obj.status.phase == "Failed" then
+          hs.message = obj.status.message
+        else
           hs.message = healthyCondition.message
-          return hs
         end
+        return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
+        hs.status = "Healthy"
+        hs.message = healthyCondition.message
+        return hs
       end
+      
     end
 
-    hs.status = "Progressing"
-    hs.message = "Waiting for ISBService status"
+    hs.status = "Unknown"
+    hs.message = "Unknown ISBService status"
     return hs
   resource.customizations.health.numaplane.numaproj.io_NumaflowControllerRollout:
     |
@@ -108,7 +127,26 @@ data:
     local hs = {}
     local healthyCondition = {}
 
+    if obj.metadata.generation ~= obj.status.observedGeneration then
+      hs.status = "Progressing"
+      hs.message = "not yet reconciled"
+      return hs
+    end
+
     if obj.status ~= nil then
+
+      if obj.status.phase == "Pending" then
+        hs.status = "Progressing"
+        hs.message = "phase=Pending"
+        return hs
+      end
+
+      if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
+        hs.status = "Progressing"
+        hs.message = "update in progress"
+        return hs
+      end
+
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" then
@@ -117,32 +155,51 @@ data:
         end
       end
 
-      if obj.metadata.generation == obj.status.observedGeneration then
-        if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Degraded") or obj.status.phase == "Failed" then
-          hs.status = "Degraded"
-          if obj.status.phase == "Failed" then
-            hs.message = obj.status.message
-          else
-            hs.message = healthyCondition.message
-          end
-          return hs
-        elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
-          hs.status = "Healthy"
+      
+      if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Degraded") or obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        if obj.status.phase == "Failed" then
+          hs.message = obj.status.message
+        else
           hs.message = healthyCondition.message
-          return hs
         end
+        return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
+        hs.status = "Healthy"
+        hs.message = healthyCondition.message
+        return hs
       end
+      
     end
 
-    hs.status = "Progressing"
-    hs.message = "Waiting for NumaflowController status"
+    hs.status = "Unknown"
+    hs.message = "Unknown NumaflowController status"
     return hs
   resource.customizations.health.numaplane.numaproj.io_MonoVertexRollout: |
     -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19688
     local hs = {}
     local healthyCondition = {}
 
+    if obj.metadata.generation ~= obj.status.observedGeneration then
+      hs.status = "Progressing"
+      hs.message = "not yet reconciled"
+      return hs
+    end
+
     if obj.status ~= nil then
+
+      if obj.status.phase == "Pending" then
+        hs.status = "Progressing"
+        hs.message = "phase=Pending"
+        return hs
+      end
+
+      if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
+        hs.status = "Progressing"
+        hs.message = "update in progress"
+        return hs
+      end
+
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" then
@@ -151,25 +208,25 @@ data:
         end
       end
 
-      if obj.metadata.generation == obj.status.observedGeneration then
-        if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "MonoVertexFailed") or obj.status.phase == "Failed" then
-          hs.status = "Degraded"
-          if obj.status.phase == "Failed" then
-            hs.message = obj.status.message
-          else
-            hs.message = healthyCondition.message
-          end
-          return hs
-        elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
-          hs.status = "Healthy"
+      
+      if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "MonoVertexFailed") or obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        if obj.status.phase == "Failed" then
+          hs.message = obj.status.message
+        else
           hs.message = healthyCondition.message
-          return hs
         end
+        return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
+        hs.status = "Healthy"
+        hs.message = healthyCondition.message
+        return hs
       end
+      
     end
 
-    hs.status = "Progressing"
-    hs.message = "Waiting for MonoVertex status"
+    hs.status = "Unknown"
+    hs.message = "Unknown MonoVertex status"
     return hs
   resource.customizations.actions.numaplane.numaproj.io_PipelineRollout: |
     discovery.lua: |
