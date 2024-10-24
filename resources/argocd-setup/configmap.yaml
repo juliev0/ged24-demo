@@ -54,6 +54,10 @@ data:
           hs.message = healthyCondition.message
         end
         return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
+        hs.status = "Progressing"
+        hs.message = healthyCondition.message
+        return hs
       elseif (pipelinePaused ~= {} and pipelinePaused.status == "True") then
         hs.status = "Suspended"
         hs.message = pipelinePaused.message
@@ -110,6 +114,10 @@ data:
           hs.message = healthyCondition.message
         end
         return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
+        hs.status = "Progressing"
+        hs.message = healthyCondition.message
+        return hs
       elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
         hs.status = "Healthy"
         hs.message = healthyCondition.message
@@ -164,6 +172,10 @@ data:
           hs.message = healthyCondition.message
         end
         return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
+        hs.status = "Progressing"
+        hs.message = healthyCondition.message
+        return hs
       elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
         hs.status = "Healthy"
         hs.message = healthyCondition.message
@@ -216,6 +228,10 @@ data:
         else
           hs.message = healthyCondition.message
         end
+        return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
+        hs.status = "Progressing"
+        hs.message = healthyCondition.message
         return hs
       elseif healthyCondition ~= {} and healthyCondition.status == "True" and obj.status.phase == "Deployed" then
         hs.status = "Healthy"
