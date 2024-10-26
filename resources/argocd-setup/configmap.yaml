@@ -14,25 +14,29 @@ data:
     local healthyCondition = {}
     local pipelinePaused = {}
 
-    if obj.metadata.generation ~= obj.status.observedGeneration then
-      hs.status = "Progressing"
-      hs.message = "not yet reconciled"
-      return hs
-    end
-
     if obj.status ~= nil then
+
+      -- check for certain cases of "Progressing"
+      
+      if obj.metadata.generation ~= obj.status.observedGeneration then
+        hs.status = "Progressing"
+        hs.message = "Not yet reconciled"
+        return hs
+      end
 
       if obj.status.phase == "Pending" then
         hs.status = "Progressing"
-        hs.message = "phase=Pending"
+        hs.message = "Phase=Pending"
         return hs
       end
 
       if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
         hs.status = "Progressing"
-        hs.message = "update in progress"
+        hs.message = "Update in progress"
         return hs
       end
+
+      -- now check the Conditions
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
@@ -67,8 +71,13 @@ data:
         hs.message = healthyCondition.message
         return hs
       end
+
+    else -- if there's no Status at all, we haven't been reconciled
+      hs.status = "Progressing"
+      hs.message = "Not yet reconciled"
+      return hs
     end
-    
+
 
     hs.status = "Unknown"
     hs.message = "Unknown Pipeline status"
@@ -78,25 +87,29 @@ data:
     local hs = {}
     local healthyCondition = {}
 
-    if obj.metadata.generation ~= obj.status.observedGeneration then
-      hs.status = "Progressing"
-      hs.message = "not yet reconciled"
-      return hs
-    end
-
     if obj.status ~= nil then
+
+      -- check for certain cases of "Progressing"
+
+      if obj.metadata.generation ~= obj.status.observedGeneration then
+        hs.status = "Progressing"
+        hs.message = "Not yet reconciled"
+        return hs
+      end
 
       if obj.status.phase == "Pending" then
         hs.status = "Progressing"
-        hs.message = "phase=Pending"
+        hs.message = "Phase=Pending"
         return hs
       end
 
       if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
         hs.status = "Progressing"
-        hs.message = "update in progress"
+        hs.message = "Update in progress"
         return hs
       end
+
+      -- now check the Conditions
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
@@ -123,37 +136,46 @@ data:
         hs.message = healthyCondition.message
         return hs
       end
+
+    else -- if there's no Status at all, we haven't been reconciled
+      hs.status = "Progressing"
+      hs.message = "Not yet reconciled"
+      return hs
       
     end
 
     hs.status = "Unknown"
     hs.message = "Unknown ISBService status"
-    return hs
-  resource.customizations.health.numaplane.numaproj.io_NumaflowControllerRollout:
-    |
+    return hs    
+  resource.customizations.health.numaplane.numaproj.io_NumaflowControllerRollout: |
+    
     -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19077
     local hs = {}
     local healthyCondition = {}
 
-    if obj.metadata.generation ~= obj.status.observedGeneration then
-      hs.status = "Progressing"
-      hs.message = "not yet reconciled"
-      return hs
-    end
-
     if obj.status ~= nil then
+
+      -- check for certain cases of "Progressing"
+      
+      if obj.metadata.generation ~= obj.status.observedGeneration then
+        hs.status = "Progressing"
+        hs.message = "Not yet reconciled"
+        return hs
+      end
 
       if obj.status.phase == "Pending" then
         hs.status = "Progressing"
-        hs.message = "phase=Pending"
+        hs.message = "Phase=Pending"
         return hs
       end
 
       if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
         hs.status = "Progressing"
-        hs.message = "update in progress"
+        hs.message = "Update in progress"
         return hs
       end
+
+      -- now check the Conditions
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
@@ -181,6 +203,11 @@ data:
         hs.message = healthyCondition.message
         return hs
       end
+
+    else -- if there's no Status at all, we haven't been reconciled
+      hs.status = "Progressing"
+      hs.message = "Not yet reconciled"
+      return hs
       
     end
 
@@ -192,25 +219,30 @@ data:
     local hs = {}
     local healthyCondition = {}
 
-    if obj.metadata.generation ~= obj.status.observedGeneration then
-      hs.status = "Progressing"
-      hs.message = "not yet reconciled"
-      return hs
-    end
-
     if obj.status ~= nil then
+
+      -- check for certain cases of "Progressing"
+
+      if obj.metadata.generation ~= obj.status.observedGeneration then
+        hs.status = "Progressing"
+        hs.message = "Not yet reconciled"
+        return hs
+      end
 
       if obj.status.phase == "Pending" then
         hs.status = "Progressing"
-        hs.message = "phase=Pending"
+        hs.message = "Phase=Pending"
         return hs
       end
 
       if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
         hs.status = "Progressing"
-        hs.message = "update in progress"
+        hs.message = "Update in progress"
         return hs
       end
+
+
+      -- now check the Conditions
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
@@ -238,6 +270,11 @@ data:
         hs.message = healthyCondition.message
         return hs
       end
+
+    else -- if there's no Status at all, we haven't been reconciled
+      hs.status = "Progressing"
+      hs.message = "Not yet reconciled"
+      return hs
       
     end
 
