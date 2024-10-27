@@ -10,7 +10,7 @@ spec:
       limits:
         readBatchSize: 1
       lifecycle:
-        pauseGracePeriodSeconds: 200
+        pauseGracePeriodSeconds: 30
       vertices:
         - name: in
           scale:
@@ -18,7 +18,7 @@ spec:
             max: 1
           source:
             generator:
-              rpu: 5
+              rpu: 3
               duration: 1s
           containerTemplate:
             env:
