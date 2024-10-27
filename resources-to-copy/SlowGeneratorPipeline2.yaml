@@ -18,7 +18,7 @@ spec:
             max: 1
           source:
             generator:
-              rpu: 100
+              rpu: 5
               duration: 1s
           containerTemplate:
             env:
