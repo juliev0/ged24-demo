@@ -10,7 +10,7 @@ spec:
     spec:
       # Example from https://github.com/numaproj/numaflow/blob/main/examples/0-isbsvc-jetstream.yaml
       jetstream:
-        version: 2.9.8 # can switch 2.9.6<->2.9.8
+        version: 2.9.6 # can switch 2.9.6<->2.9.8
         persistence:
           volumeSize: 1Gi
-        replicas: 5
+        replicas: 3
