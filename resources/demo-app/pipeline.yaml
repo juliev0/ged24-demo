@@ -33,12 +33,14 @@ spec:
           udf:
             container: 
               image: "quay.io/numaio/numaflow-go/map-slow-cat:stable"
+              env:
+                - name: SLEEP_SECONDS
+                  value: "2"
           containerTemplate:
             env:
               - name: NUMAFLOW_DEBUG
                 value: "true"
-              - name: SLEEP_SECONDS
-                value: "2"
+              
         - name: cat-2
           udf:
             builtin:
