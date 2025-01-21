@@ -35,7 +35,7 @@ spec:
               image: "quay.io/numaio/numaflow-go/map-slow-cat:stable"
               env:
                 - name: SLEEP_SECONDS
-                  value: "2"
+                  value: "1"
           containerTemplate:
             env:
               - name: NUMAFLOW_DEBUG
