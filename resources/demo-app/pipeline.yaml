@@ -37,6 +37,8 @@ spec:
             env:
               - name: NUMAFLOW_DEBUG
                 value: "true"
+              - name: SLEEP_SECONDS
+                value: "2"
         - name: cat-2
           udf:
             builtin:
