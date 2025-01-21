@@ -32,7 +32,7 @@ spec:
             max: 1
           udf:
             container: 
-              image: quay.io/numaio/numaflow-go/map-cat-sleep:v1
+              image: "quay.io/numaio/numaflow-go/map-slow-cat:stable"
           containerTemplate:
             env:
               - name: NUMAFLOW_DEBUG
