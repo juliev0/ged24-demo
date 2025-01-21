@@ -14,19 +14,6 @@ data:
     local healthyCondition = {}
     local pipelinePaused = {}
 
-    if obj.status ~= nil then
-
-      -- check for certain cases of "Progressing"
-      
-      if obj.metadata.generation ~= obj.status.observedGeneration then
-        hs.status = "Progressing"
-        hs.message = "Not yet reconciled"
-        retresource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
-    -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19077
-    local hs = {}
-    local healthyCondition = {}
-    local pipelinePaused = {}
-
     -- check for certain cases of "Progressing"
 
     if obj.status == nil then -- if there's no Status at all, we haven't been reconciled
