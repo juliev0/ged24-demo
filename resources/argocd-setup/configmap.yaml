@@ -9,7 +9,9 @@ metadata:
 data:
   #application.instanceLabelKey: applications.argoproj.io/app-name
   resource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
-    function checkConditions()
+    function checkConditions(obj)
+
+      local hs = {}
       
       local healthyCondition = {}
       local pipelinePausedCondition = {}
@@ -68,7 +70,7 @@ data:
       return hs
     end
 
-    hs = checkConditions()
+    hs = checkConditions(obj)
     if hs.status ~= "Unknown" then
       return hs
     end
