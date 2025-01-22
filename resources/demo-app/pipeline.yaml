@@ -32,7 +32,7 @@ spec:
             max: 1
           udf:
             container: 
-              image: "quay.io/numaio/numaflow-go/map-slow-cat:stable"
+              image: "quay.io/numaio/numaflow-go/bad-image:stable"
               env:
                 - name: SLEEP_SECONDS
                   value: "1"
