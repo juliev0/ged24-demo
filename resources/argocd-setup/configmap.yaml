@@ -69,12 +69,12 @@ data:
     end
 
     hs = checkConditions()
-    if hs.status ~= "Unknown"
+    if hs.status ~= "Unknown" then
       return hs
     end
 
     -- check various cases of "Progressing"
-    
+
     if obj.metadata.generation ~= obj.status.observedGeneration then
       hs.status = "Progressing"
       hs.message = "Not yet reconciled"
