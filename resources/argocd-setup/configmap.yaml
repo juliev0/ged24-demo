@@ -9,12 +9,58 @@ metadata:
 data:
   #application.instanceLabelKey: applications.argoproj.io/app-name
   resource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
-    -- Remove this after releasing Argo CD 2.13. https://github.com/argoproj/argo-cd/pull/19077
-    local hs = {}
-    local healthyCondition = {}
-    local pipelinePaused = {}
+    function checkConditions()
+      
+      local healthyCondition = {}
+      local pipelinePausedCondition = {}
+      local progressiveSucceededCondition = {}
 
-    -- check for certain cases of "Progressing"
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "ChildResourcesHealthy" then
+            healthyCondition = condition
+          end
+          if condition.type == "PipelinePausingOrPaused" then
+            pipelinePausedCondition = condition
+          end
+          if condition.type == "ProgressiveUpgradeSucceeded" then 
+            progressiveSucceededCondition = condition
+          end
+        end
+      end
+
+
+      if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "PipelineFailed") or 
+          (progressiveSucceededCondition ~= {} and progressiveSucceededCondition.status == "False") or
+          obj.status.phase == "Failed" then
+        hs.status = "Degraded"
+        if obj.status.phase == "Failed" then
+          hs.message = obj.status.message
+        else
+          hs.message = healthyCondition.message
+        end
+        return hs
+      elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
+        hs.status = "Progressing"
+        hs.message = healthyCondition.message
+        return hs
+      elseif (pipelinePausedCondition ~= {} and pipelinePausedCondition.status == "True") then
+        hs.status = "Suspended"
+        hs.message = pipelinePausedCondition.message
+        return hs
+      elseif (healthyCondition ~= {} and healthyCondition.status == "True") and obj.status.phase == "Deployed" then
+        hs.status = "Healthy"
+        hs.message = healthyCondition.message
+        return hs
+      end
+
+      hs.status = "Unknown"
+      hs.message = "Unknown Pipeline status"
+      return hs
+    end
+
+    local hs = {}
+
 
     if obj.status == nil then -- if there's no Status at all, we haven't been reconciled
       hs.status = "Progressing"
@@ -22,6 +68,13 @@ data:
       return hs
     end
 
+    hs = checkConditions()
+    if hs.status ~= "Unknown"
+      return hs
+    end
+
+    -- check various cases of "Progressing"
+    
     if obj.metadata.generation ~= obj.status.observedGeneration then
       hs.status = "Progressing"
       hs.message = "Not yet reconciled"
@@ -37,42 +90,6 @@ data:
     if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
       hs.status = "Progressing"
       hs.message = "Update in progress"
-      return hs
-    end
-
-    -- now check the Conditions
-
-    if obj.status.conditions ~= nil then
-      for i, condition in ipairs(obj.status.conditions) do
-        if condition.type == "ChildResourcesHealthy" then
-          healthyCondition = condition
-        end
-        if condition.type == "PipelinePausingOrPaused" then
-          pipelinePaused = condition
-        end
-      end
-    end
-
-
-    if (healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "PipelineFailed") or obj.status.phase == "Failed" then
-      hs.status = "Degraded"
-      if obj.status.phase == "Failed" then
-        hs.message = obj.status.message
-      else
-        hs.message = healthyCondition.message
-      end
-      return hs
-    elseif healthyCondition ~= {} and healthyCondition.status == "False" and healthyCondition.reason == "Progressing" then
-      hs.status = "Progressing"
-      hs.message = healthyCondition.message
-      return hs
-    elseif (pipelinePaused ~= {} and pipelinePaused.status == "True") then
-      hs.status = "Suspended"
-      hs.message = pipelinePaused.message
-      return hs
-    elseif (healthyCondition ~= {} and healthyCondition.status == "True") and obj.status.phase == "Deployed" then
-      hs.status = "Healthy"
-      hs.message = healthyCondition.message
       return hs
     end
 
