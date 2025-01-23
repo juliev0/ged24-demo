@@ -70,28 +70,26 @@ data:
       return hs
     end
 
-    hs = checkConditions(obj)
-    if hs.status ~= "Unknown" then
-      return hs
-    end
-
-    -- check various cases of "Progressing"
-
     if obj.metadata.generation ~= obj.status.observedGeneration then
       hs.status = "Progressing"
       hs.message = "Not yet reconciled"
       return hs
     end
 
-    if obj.status.phase == "Pending" then
-      hs.status = "Progressing"
-      hs.message = "Phase=Pending"
-      return hs
-    end
-
     if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
       hs.status = "Progressing"
       hs.message = "Update in progress"
+      return hs
+    end
+
+    hs = checkConditions(obj)
+    if hs.status ~= "Unknown" then
+      return hs
+    end
+
+    if obj.status.phase == "Pending" then
+      hs.status = "Progressing"
+      hs.message = "Phase=Pending"
       return hs
     end
 
@@ -149,28 +147,26 @@ data:
       return hs
     end
 
-    hs = checkConditions(obj)
-    if hs.status ~= "Unknown" then
-      return hs
-    end
-
-    -- check for certain cases of "Progressing"
-
     if obj.metadata.generation ~= obj.status.observedGeneration then
       hs.status = "Progressing"
       hs.message = "Not yet reconciled"
       return hs
     end
 
-    if obj.status.phase == "Pending" then
-      hs.status = "Progressing"
-      hs.message = "Phase=Pending"
-      return hs
-    end
-
     if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
       hs.status = "Progressing"
       hs.message = "Update in progress"
+      return hs
+    end
+
+    hs = checkConditions(obj)
+    if hs.status ~= "Unknown" then
+      return hs
+    end
+
+    if obj.status.phase == "Pending" then
+      hs.status = "Progressing"
+      hs.message = "Phase=Pending"
       return hs
     end
 
@@ -309,28 +305,26 @@ data:
       return hs
     end
 
-    hs = checkConditions(obj)
-    if hs.status ~= "Unknown" then
-      return hs
-    end
-
-    -- check for certain cases of "Progressing"
-
     if obj.metadata.generation ~= obj.status.observedGeneration then
       hs.status = "Progressing"
       hs.message = "Not yet reconciled"
       return hs
     end
 
-    if obj.status.phase == "Pending" then
-      hs.status = "Progressing"
-      hs.message = "Phase=Pending"
-      return hs
-    end
-
     if obj.status.upgradeInProgress ~= nil and obj.status.upgradeInProgress ~= "" then
       hs.status = "Progressing"
       hs.message = "Update in progress"
+      return hs
+    end
+
+    hs = checkConditions(obj)
+    if hs.status ~= "Unknown" then
+      return hs
+    end
+
+    if obj.status.phase == "Pending" then
+      hs.status = "Progressing"
+      hs.message = "Phase=Pending"
       return hs
     end
 
