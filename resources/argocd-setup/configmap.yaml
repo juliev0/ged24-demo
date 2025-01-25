@@ -9,7 +9,46 @@ metadata:
 data:
   #application.instanceLabelKey: applications.argoproj.io/app-name
   resource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
-    -- return true if progressing, along with the reason
+    -- return true if paused, along with the reason
+    function isPaused(obj)
+      if obj.status == nil then 
+        return false, ""
+      end
+
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "PipelinePausingOrPaused" and condition.status == "True" then
+            return true, pausedCondition.message
+          end
+        end
+      end
+    end
+
+   
+
+    -- return true if degraded, along with the reason
+    function isDegraded(obj) 
+      if obj.status == nil then 
+        return false, ""
+      end
+      -- check phase=Failed, healthy condition failed, progressive upgrade failed
+      if obj.status.phase == "Failed" then
+        return true, obj.status.message
+      end
+
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "PipelineFailed" then
+            return true, condition.message
+          elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
+            return true, "Progressive upgrade failed"
+          end
+        end
+      end
+
+      return false, ""
+    end
+
     function isProgressing(obj) 
       -- if there's no Status at all, we haven't been reconciled
       if obj.status == nil then 
@@ -42,48 +81,11 @@ data:
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "Progressing" then
             return true, "Child Progressing"
-        end
-      end
-
-      return false, ""
-    end
-
-    -- return true if degraded, along with the reason
-    function isDegraded(obj) 
-      if obj.status == nil then 
-        return false, ""
-      end
-      -- check phase=Failed, healthy condition failed, progressive upgrade failed
-      if obj.status.phase == "Failed" then
-        return true, obj.status.message
-      end
-
-      if obj.status.conditions ~= nil then
-        for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "PipelineFailed" then
-            return true, condition.message
-          elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
-            return true, "Progressive upgrade failed"
           end
         end
       end
 
       return false, ""
-    end
-
-    -- return true if paused, along with the reason
-    function isPaused(obj)
-      if obj.status == nil then 
-        return false, ""
-      end
-
-      if obj.status.conditions ~= nil then
-          if condition.type == "PipelinePausingOrPaused" and condition.status == "True" then
-            return true, pausedCondition.message
-          end
-        end
-      end
-
     end
 
     -- return true if healthy, along with the reason
@@ -94,7 +96,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == true then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
             return true, "Healthy"
           end
         end
@@ -277,8 +279,46 @@ data:
     hs.message = "Unknown NumaflowController status"
     return hs
   resource.customizations.health.numaplane.numaproj.io_MonoVertexRollout: |
+    -- return true if paused, along with the reason
+    function isPaused(obj)
+      if obj.status == nil then 
+        return false, ""
+      end
 
-    -- return true if progressing, along with the reason
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "PipelinePausingOrPaused" and condition.status == "True" then
+            return true, pausedCondition.message
+          end
+        end
+      end
+    end
+
+   
+
+    -- return true if degraded, along with the reason
+    function isDegraded(obj) 
+      if obj.status == nil then 
+        return false, ""
+      end
+      -- check phase=Failed, healthy condition failed, progressive upgrade failed
+      if obj.status.phase == "Failed" then
+        return true, obj.status.message
+      end
+
+      if obj.status.conditions ~= nil then
+        for i, condition in ipairs(obj.status.conditions) do
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "PipelineFailed" then
+            return true, condition.message
+          elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
+            return true, "Progressive upgrade failed"
+          end
+        end
+      end
+
+      return false, ""
+    end
+
     function isProgressing(obj) 
       -- if there's no Status at all, we haven't been reconciled
       if obj.status == nil then 
@@ -311,48 +351,11 @@ data:
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "Progressing" then
             return true, "Child Progressing"
-        end
-      end
-
-      return false, ""
-    end
-
-    -- return true if degraded, along with the reason
-    function isDegraded(obj) 
-      if obj.status == nil then 
-        return false, ""
-      end
-      -- check phase=Failed, healthy condition failed, progressive upgrade failed
-      if obj.status.phase == "Failed" then
-        return true, obj.status.message
-      end
-
-      if obj.status.conditions ~= nil then
-        for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "MonoVertexFailed" then
-            return true, condition.message
-          elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
-            return true, "Progressive upgrade failed"
           end
         end
       end
 
       return false, ""
-    end
-
-    -- return true if paused, along with the reason
-    function isPaused(obj)
-      if obj.status == nil then 
-        return false, ""
-      end
-
-      if obj.status.conditions ~= nil then
-          if condition.type == "MonoVertexPausingOrPaused" and condition.status == "True" then
-            return true, pausedCondition.message
-          end
-        end
-      end
-
     end
 
     -- return true if healthy, along with the reason
@@ -363,7 +366,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == true then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "True" then
             return true, "Healthy"
           end
         end
