@@ -287,7 +287,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "PipelinePausingOrPaused" and condition.status == "True" then
+          if condition.type == "MonoVertexPausingOrPaused" and condition.status == "True" then
             return true, pausedCondition.message
           end
         end
@@ -308,7 +308,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "PipelineFailed" then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "MonoVertexFailed" then
             return true, condition.message
           elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
             return true, "Progressive upgrade failed"
@@ -401,7 +401,7 @@ data:
     end
 
     hs.status = "Unknown"
-    hs.message = "Unknown Pipeline status"
+    hs.message = "Unknown MonoVertex status"
     return hs
 
 
