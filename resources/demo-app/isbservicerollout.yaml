@@ -7,6 +7,6 @@ spec:
   interStepBufferService:
     spec:
       jetstream:
-        version: 2.10.3
+        version: 2.10.11
         persistence:
           volumeSize: 1Gi
