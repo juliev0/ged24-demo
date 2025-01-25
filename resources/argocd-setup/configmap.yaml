@@ -229,7 +229,7 @@ data:
       hs.status = "Degraded"
       hs.message = reason
       return hs
-    
+    end
 
     healthy, reason = isHealthy(obj)
     if healthy then
