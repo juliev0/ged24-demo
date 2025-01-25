@@ -110,24 +110,28 @@ data:
     if progressing then
       hs.status = "Progressing"
       hs.message = reason
+      return hs
     end
 
     degraded, reason = isDegraded(obj)
     if degraded then
       hs.status = "Degraded"
       hs.message = reason
+      return hs
     end
 
     paused, reason = isPaused(obj)
     if paused then 
       hs.status = "Suspended"
       hs.message = reason
+      return hs
     end
 
     healthy, reason = isHealthy(obj)
     if healthy then
       hs.status = "Healthy"
       hs.message = reason
+      return hs
     end
 
     hs.status = "Unknown"
@@ -380,24 +384,28 @@ data:
     if progressing then
       hs.status = "Progressing"
       hs.message = reason
+      return hs
     end
 
     degraded, reason = isDegraded(obj)
     if degraded then
       hs.status = "Degraded"
       hs.message = reason
+      return hs
     end
 
     paused, reason = isPaused(obj)
     if paused then 
       hs.status = "Suspended"
       hs.message = reason
+      return hs
     end
 
     healthy, reason = isHealthy(obj)
     if healthy then
       hs.status = "Healthy"
       hs.message = reason
+      return hs
     end
 
     hs.status = "Unknown"
