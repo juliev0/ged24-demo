@@ -40,7 +40,7 @@ data:
       -- if the child is Progressing
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and healthyCondition.reason == "Progressing" then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "Progressing" then
             return true, "Child Progressing"
         end
       end
@@ -60,7 +60,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and healthyCondition.status == "False" and healthyCondition.reason == "PipelineFailed" then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "PipelineFailed" then
             return true, condition.message
           elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
             return true, "Progressive upgrade failed"
@@ -95,7 +95,7 @@ data:
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" and condition.status == true then
-            healthyCondition = condition
+            return true, "Healthy"
           end
         end
       end
@@ -309,7 +309,7 @@ data:
       -- if the child is Progressing
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and healthyCondition.reason == "Progressing" then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "Progressing" then
             return true, "Child Progressing"
         end
       end
@@ -329,7 +329,7 @@ data:
 
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
-          if condition.type == "ChildResourcesHealthy" and healthyCondition.status == "False" and healthyCondition.reason == "MonoVertexFailed" then
+          if condition.type == "ChildResourcesHealthy" and condition.status == "False" and condition.reason == "MonoVertexFailed" then
             return true, condition.message
           elseif condition.type == "ProgressiveUpgradeSucceeded" and condition.status == "False" then
             return true, "Progressive upgrade failed"
@@ -364,7 +364,7 @@ data:
       if obj.status.conditions ~= nil then
         for i, condition in ipairs(obj.status.conditions) do
           if condition.type == "ChildResourcesHealthy" and condition.status == true then
-            healthyCondition = condition
+            return true, "Healthy"
           end
         end
       end
