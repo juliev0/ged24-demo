@@ -44,7 +44,7 @@ spec:
       edges:
         - from: in
           to: cat-2
-        - from: cat
+        #- from: cat
         #  to: cat-2
         #- from: cat-2
         #  to: out
