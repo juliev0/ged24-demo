@@ -9,8 +9,8 @@ spec:
       source:
         udsource:
           container:
-            image: quay.io/numaio/numaflow-go/source-simple-source:stable
-            #image: quay.io/numaio/numaflow-go/bad-image:stable
+            #image: quay.io/numaio/numaflow-go/source-simple-source:stable
+            image: quay.io/numaio/numaflow-go/bad-image:stable
       sink:
         udsink:
           container:
