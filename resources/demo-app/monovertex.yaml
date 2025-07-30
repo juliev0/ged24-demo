@@ -7,8 +7,8 @@ spec:
   monoVertex:
     metadata:
       labels:
-        myTestLabel: "bcd"
-        labelWith.Period: "labelWithPeriod"
+        myTestLabel: "cde"
+        labelWith.Period: "labelWithAPeriod"
     spec:
       source:
         udsource:
