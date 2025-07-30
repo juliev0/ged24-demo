@@ -5,6 +5,9 @@ metadata:
   namespace: example-namespace
 spec:
   monoVertex:
+    metadata:
+      labels:
+        myTestLabel: "bcd"
     spec:
       source:
         udsource:
