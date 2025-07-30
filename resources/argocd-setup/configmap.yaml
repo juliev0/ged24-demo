@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: argocd
 data:
 
-  resource.customLabels: "argocd.argoproj.io/instance"
+  resource.customLabels: "myTestLabel"
 
   #application.instanceLabelKey: applications.argoproj.io/app-name
   resource.customizations.health.numaplane.numaproj.io_PipelineRollout: |
