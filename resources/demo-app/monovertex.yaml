@@ -8,6 +8,7 @@ spec:
     metadata:
       labels:
         myTestLabel: "bcd"
+        labelWith.Period: "labelWithPeriod"
     spec:
       source:
         udsource:
