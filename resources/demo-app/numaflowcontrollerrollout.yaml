@@ -4,6 +4,8 @@ metadata:
   name: numaflow-controller
   #name: numaflow-controller-0 
   namespace: example-namespace
+  labels:
+    myTestLabel: "abc"
 spec:
   controller:
     #instanceID: "0" # uncomment for Progressive rollout to set Numaflow Controller instance
